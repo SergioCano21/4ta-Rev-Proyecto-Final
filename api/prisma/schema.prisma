@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+
+  patients Patient[]
+
+  @@map("users")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model Patient {
+  id     Int    @id @default(autoincrement())
+  name   String
+  age    Int
+  gender Gender
+
+  doctorId Int     @map("doctor_id")
+  doctor   User    @relation(fields: [doctorId], references: [id])
+  vitals   Vital[]
+
+  @@map("patients")
+}
+
+model Vital {
+  id              Int      @id @default(autoincrement())
+  deviceId        String   @map("device_id")
+  heartRate       Int      @map("heart_rate")
+  oxygenLevel     Float    @map("oxygen_level")
+  bodyTemperature Float    @map("body_temperature")
+  steps           Int
+  timestamp       DateTime @default(now())
+
+  patientId Int     @map("patient_id")
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  @@map("vitals")
+}
