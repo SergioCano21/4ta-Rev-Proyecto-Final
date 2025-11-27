@@ -133,14 +133,14 @@ export const getAverageHR = async (req: AuthRequest, res: Response, next: NextFu
 
     if (heartRates.length === 0) {
       res.status(200).json({ error: false, message: "Heart vitals average retrieved successfully", data: 0 });
+    } else {
+      const avgHR = (heartRates.reduce((acc, cur) => acc + cur, 0) / heartRates.length).toFixed(2);
+
+      console.log("Heart vitals average retrieved successfully");
+      console.log("HR Average: ", avgHR);
+
+      res.status(200).json({ error: false, message: "Heart vitals average retrieved successfully", data: avgHR });
     }
-
-    const avgHR = (heartRates.reduce((acc, cur) => acc + cur, 0) / heartRates.length).toFixed(2);
-
-    console.log("Heart vitals average retrieved successfully");
-    console.log("HR Average: ", avgHR);
-
-    res.status(200).json({ error: false, message: "Heart vitals average retrieved successfully", data: avgHR });
   } catch (error) {
     next(error);
   }

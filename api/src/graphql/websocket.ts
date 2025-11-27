@@ -4,7 +4,10 @@ import { schema } from "./index";
 import { getUserFromToken } from "../utils/auth.utils";
 
 export const webSocket = (httpServer: any) => {
-  const wsServer = new WebSocketServer({ server: httpServer, path: "/graphql" });
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: "/graphql",
+  });
 
   useServer(
     {
